@@ -114,4 +114,40 @@ class Formatter {
         }
     }
 
+    fun formatNumber(number: String): String  {
+
+        var finalReversedNo = ""
+
+        if (number.length >= 9){
+
+            var number2 = number.toLong()
+
+            var num = number2
+            var reversed = 0L
+            while (num != 0L) {
+                val digit = num % 10
+                reversed = reversed * 10 + digit
+                num /= 10
+            }
+
+            var reversedNo = reversed.toString().substring(0, 9).toLong()
+            var reversedFinal = 0L
+            while (reversedNo != 0L) {
+                val digit = reversedNo % 10
+                reversedFinal = reversedFinal * 10 + digit
+                reversedNo /= 10
+            }
+
+            finalReversedNo = "0$reversedFinal"
+
+        }else{
+
+            finalReversedNo = "invalid phone number"
+
+        }
+
+
+
+        return finalReversedNo.toString()
+    }
 }
