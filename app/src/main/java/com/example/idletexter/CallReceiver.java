@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.provider.CallLog;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -147,6 +148,8 @@ public class CallReceiver extends BroadcastReceiver {
                                          TODO: Send SMS using SenderId when the network is available and send normal sms when no sms is available
                                          *
                                          */
+
+                                        Log.e("*-*-*-* ", lastCallnumber);
 
 //                                        dateTimeFormatter1 = new SimpleDateFormat("dd/MM/yyyy");
 //

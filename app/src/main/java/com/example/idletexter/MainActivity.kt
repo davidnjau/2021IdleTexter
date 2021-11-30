@@ -7,26 +7,44 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.CallLog
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 
 class MainActivity : AppCompatActivity() {
 
+    private val permissionsRequestCode = 123
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        hasPermissions(this, Manifest.permission.READ_CALL_LOG)
-        hasPermissions(this, Manifest.permission.READ_SMS)
 
-        Formatter().getContactLogs(this)
-        Formatter().getAllSms(this)
     }
-    private fun hasPermissions(context: Context, vararg permissions: String): Boolean = permissions.all {
-        ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onStart() {
+        super.onStart()
+        checkUserPermission()
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun checkUserPermission() {
+
+        val list = listOf(
+            Manifest.permission.READ_SMS,
+            Manifest.permission.READ_CALL_LOG)
+
+        // Initialize a new instance of ManagePermissions class
+        val isPermitted = ManagePermissions(this,list,permissionsRequestCode).checkPermissions()
+        if (isPermitted){
+            Formatter().getContactLogs(this)
+            Formatter().getAllSms(this)
+        }
+    }
+
 
 }
