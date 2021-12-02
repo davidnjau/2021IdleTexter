@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/button_outline_solid.xml" value="0.28055555555555556" />
+        <entry key="app/src/main/res/drawable/edit_outline1.xml" value="0.28055555555555556" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.18840579710144928" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3677536231884058" />
       </map>
     </option>

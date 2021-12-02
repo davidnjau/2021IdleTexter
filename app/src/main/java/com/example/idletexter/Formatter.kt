@@ -20,7 +20,9 @@ class Formatter {
 
     @SuppressLint("Range")
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getContactLogs(context: Context){
+    fun getContactLogs(context: Context): ArrayList<String>{
+
+        val contactList = ArrayList<String>()
 
         var stringOutput = ""
 
@@ -32,10 +34,13 @@ class Formatter {
             do {
                 val stringNumber: String =
                     cursorCallLogs.getString(cursorCallLogs.getColumnIndex(CallLog.Calls.NUMBER))
+                contactList.add(stringNumber)
 
             } while (cursorCallLogs.moveToNext())
 
         }
+        return contactList
+
 
     }
 
