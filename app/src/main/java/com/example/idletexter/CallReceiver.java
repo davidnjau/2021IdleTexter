@@ -149,7 +149,6 @@ public class CallReceiver extends BroadcastReceiver {
                                          *
                                          */
 
-                                        Log.e("*-*-*-* ", lastCallnumber);
 
 //                                        dateTimeFormatter1 = new SimpleDateFormat("dd/MM/yyyy");
 //
