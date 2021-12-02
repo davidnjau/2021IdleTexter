@@ -100,6 +100,8 @@ public class CallReceiver extends BroadcastReceiver {
                 if (lastState == TelephonyManager.CALL_STATE_RINGING) {
                     //Ring but no pickup-  a miss
 
+                    Log.e("*-*-*-* ", "lastCallnumber");
+
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -149,7 +151,6 @@ public class CallReceiver extends BroadcastReceiver {
                                          *
                                          */
 
-                                        Log.e("*-*-*-* ", lastCallnumber);
 
 //                                        dateTimeFormatter1 = new SimpleDateFormat("dd/MM/yyyy");
 //

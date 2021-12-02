@@ -61,26 +61,29 @@ class Formatter {
                         val mpesaMessage = StringUtils.substringBetween(body, "from", "on");
                         if (mpesaMessage != null){
                             val reveredString = StringBuilder(mpesaMessage).reverse()
-                            val phoneNumberReversed = reveredString.substring(0, 10)
-                            val userNameReversed = reveredString.substring(10, mpesaMessage.length)
-                            val userName = StringBuilder(userNameReversed).reverse()
-                            val newPhoneNumber = StringBuilder(phoneNumberReversed).reverse()
+                            val reversedNo = reveredString.toString().substring(0, 10)
 
-                            var lastDigit = ""
-                            val last1 = takeLast(userName.toString(), 1) //Output: g
-                            if (last1 == "0"){
-                                lastDigit = userName.substring(0, userName.length -1)
-                            }else {
+                            Log.e("-*-*-*$i ", reversedNo.toString())
+//                            val phoneNumberReversed = reveredString.substring(0, 10)
+//                            val userNameReversed = reveredString.substring(10, mpesaMessage.length)
+//                            val userName = StringBuilder(userNameReversed).reverse()
+//                            val newPhoneNumber = StringBuilder(phoneNumberReversed).reverse()
 
-                                val last3 = takeLast(userName.toString(), 3)
-                                if(last3.contains("254")){
-                                    lastDigit = userName.substring(0, userName.length - 3)
-                                }
+//                            var lastDigit = ""
+//                            val last1 = takeLast(userName.toString(), 1) //Output: g
+//                            if (last1 == "0"){
+//                                lastDigit = userName.substring(0, userName.length -1)
+//                            }else {
+//
+//                                val last3 = takeLast(userName.toString(), 3)
+//                                if(last3.contains("254")){
+//                                    lastDigit = userName.substring(0, userName.length - 3)
+//                                }
+//
+//                            }
 
-                            }
-
-                            val userData = UserData(lastDigit, newPhoneNumber.toString())
-                            lstSms.add(userData)
+//                            val userData = UserData(lastDigit, newPhoneNumber.toString())
+//                            lstSms.add(userData)
 
 //                            Log.e("---$i ", lastDigit.toString())
 //                            Log.e("+++$i ", newPhoneNumber.toString())
