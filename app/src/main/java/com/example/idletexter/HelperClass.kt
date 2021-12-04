@@ -7,3 +7,13 @@ data class UserData(
 data class IdletexterData(
     val contactList : List<String>
 )
+data class SuccessMessage(
+    val details: String
+
+)
+enum class UrlData(var message: Int) {
+    BASE_URL(R.string.base_url),
+}
+data class ErrorMessage(
+    val error: String
+)

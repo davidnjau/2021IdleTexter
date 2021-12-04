@@ -33,12 +33,7 @@ import java.util.Collections.checkedSet
 import com.android.volley.AuthFailureError
 
 import com.android.volley.toolbox.StringRequest
-
-
-
-
-
-
+import com.example.idletexter.network_request.requests.RetrofitCallsAuthentication
 
 
 class MainActivity : AppCompatActivity() {
@@ -47,6 +42,8 @@ class MainActivity : AppCompatActivity() {
     private val list = listOf(
         Manifest.permission.READ_SMS,
         Manifest.permission.READ_CALL_LOG)
+
+    private val retrofitCallsAuthentication: RetrofitCallsAuthentication = RetrofitCallsAuthentication()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,48 +64,15 @@ class MainActivity : AppCompatActivity() {
         val isPermitted = ManagePermissions(this,list,permissionsRequestCode).checkPermissions()
         if (isPermitted){
             val contactList = Formatter().getContactLogs(this)
+            val idletexterData = IdletexterData(contactList)
 
-
-            volleyPost(contactList)
-
+            retrofitCallsAuthentication.uploadContacts(this,idletexterData )
 
 //            Formatter().getAllSms(this)
         }
 
     }
 
-    fun volleyPost(contactList: List<String>) {
-        val postUrl = "http://192.168.100.2:8085/api/v1/idle-texter/add-contacts"
-        val stringRequest: StringRequest = object : StringRequest(
-            Method.POST, postUrl,
-            Response.Listener { response ->
-                Log.d("Response --->", response)
-
-            },
-            Response.ErrorListener { error ->
-                Toast.makeText(
-                    this,
-                    error.message,
-                    Toast.LENGTH_LONG
-                ).show()
-            }) {
-            @Throws(AuthFailureError::class)
-            override fun getParams(): Map<String, String>? {
-                val params: MutableMap<String, String> = HashMap()
-                //Adding parameters to request
-                val courseList = ArrayList<String>(checkedSet)
-                val ID: String = prefProfID.getString(Config.PROFID_SHARED_PREF, "0")
-                params[Config.PROFID_SHARED_PREF] = ID
-                for (i in 0 until contactList.size()) {
-                    params["courselist"] = courseList[i]
-                }
-                //returning parameter
-                return params
-            }
-        }
-        val requestQueue = Volley.newRequestQueue(context)
-        requestQueue.add(stringRequest)
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStart() {
