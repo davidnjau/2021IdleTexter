@@ -5,7 +5,7 @@ data class UserData(
     val phoneNumber: String
 )
 data class IdletexterData(
-    val contactList : List<String>
+    val contactList : HashSet<String>
 )
 data class SuccessMessage(
     val details: String

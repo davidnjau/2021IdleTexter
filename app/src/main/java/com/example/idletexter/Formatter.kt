@@ -20,9 +20,9 @@ class Formatter {
 
     @SuppressLint("Range")
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getContactLogs(context: Context): ArrayList<String>{
+    fun getContactLogs(context: Context): HashSet<String>{
 
-        val contactList = ArrayList<String>()
+        val contactList = HashSet<String>()
 
         var stringOutput = ""
 
