@@ -1,11 +1,11 @@
 package com.example.idletexter
 
 data class UserData(
-    val userName: String,
+    val contactType: String,
     val phoneNumber: String
 )
 data class IdletexterData(
-    val contactList : HashSet<String>
+    val contactList : HashSet<UserData>
 )
 data class SuccessMessage(
     val details: String
@@ -17,3 +17,8 @@ enum class UrlData(var message: Int) {
 data class ErrorMessage(
     val error: String
 )
+enum class SourceData() {
+    IDLE_TEXTER_CALLS,
+    IDLE_TEXTER_MPESA,
+
+}

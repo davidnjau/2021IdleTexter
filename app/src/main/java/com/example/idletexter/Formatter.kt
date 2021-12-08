@@ -5,12 +5,9 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.provider.CallLog
-import android.util.Log
 import androidx.annotation.RequiresApi
 import android.provider.Telephony
 
-import android.content.ContentResolver
-import android.telephony.PhoneNumberUtils
 import org.apache.commons.lang3.StringUtils
 import java.lang.RuntimeException
 import java.lang.StringBuilder
@@ -44,8 +41,8 @@ class Formatter {
 
     }
 
-    fun getAllSms(context: Context): List<UserData> {
-        val lstSms = ArrayList<UserData>()
+    fun getAllSms(context: Context): HashSet<String> {
+
         val mSmsinboxQueryUri = Uri.parse("content://sms/inbox")
         val c = context.contentResolver.query(
             mSmsinboxQueryUri,
@@ -54,6 +51,8 @@ class Formatter {
             null,
             Telephony.Sms.Inbox.DEFAULT_SORT_ORDER
         )
+        val contactList = HashSet<String>()
+
 
         if (c != null){
             val totalSMS: Int = c.count
@@ -65,34 +64,17 @@ class Formatter {
                         val body = c.getString(0).toString()
                         val mpesaMessage = StringUtils.substringBetween(body, "from", "on");
                         if (mpesaMessage != null){
-                            val reveredString = StringBuilder(mpesaMessage).reverse()
-                            val reversedNo = reveredString.toString().substring(0, 10)
+                            val reveredString = StringBuilder(mpesaMessage).reverse().toString()
+                            if (reveredString.length > 9){
+                                val reversedNo = reveredString.substring(0, 10)
+                                //Reverse the string back
+                                val newReversedString = StringBuilder(reversedNo).reverse().toString()
+                                val firstChar = newReversedString[0].toString()
+                                if (firstChar == "7"){
+                                    contactList.add(newReversedString)
+                                }
 
-                            Log.e("-*-*-*$i ", reversedNo.toString())
-//                            val phoneNumberReversed = reveredString.substring(0, 10)
-//                            val userNameReversed = reveredString.substring(10, mpesaMessage.length)
-//                            val userName = StringBuilder(userNameReversed).reverse()
-//                            val newPhoneNumber = StringBuilder(phoneNumberReversed).reverse()
-
-//                            var lastDigit = ""
-//                            val last1 = takeLast(userName.toString(), 1) //Output: g
-//                            if (last1 == "0"){
-//                                lastDigit = userName.substring(0, userName.length -1)
-//                            }else {
-//
-//                                val last3 = takeLast(userName.toString(), 3)
-//                                if(last3.contains("254")){
-//                                    lastDigit = userName.substring(0, userName.length - 3)
-//                                }
-//
-//                            }
-
-//                            val userData = UserData(lastDigit, newPhoneNumber.toString())
-//                            lstSms.add(userData)
-
-//                            Log.e("---$i ", lastDigit.toString())
-//                            Log.e("+++$i ", newPhoneNumber.toString())
-
+                            }
                         }
 
 
@@ -109,53 +91,33 @@ class Formatter {
 
 
 
-        return lstSms
+        return contactList
     }
 
-    private fun takeLast(value: String, count: Int): String{
-        if (value.trim { it <= ' ' }.isEmpty()) return ""
-        if (count < 1) return ""
-        return if (value.length > count) {
-            value.substring(value.length - count)
-        } else {
-            value
-        }
-    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getAllContactData(context: Context): HashSet<UserData>{
 
-    fun formatNumber(number: String): String  {
+        val contactListCallLog = getContactLogs(context)
+        val contactListSMS = getAllSms(context)
 
-        var finalReversedNo = ""
+        val idletexterCalls = SourceData.IDLE_TEXTER_CALLS.name
+        val idletexterMpesa = SourceData.IDLE_TEXTER_MPESA.name
 
-        if (number.length >= 9){
+        val mergedContactList = HashSet<UserData>()
+        for (phoneNumber in contactListCallLog){
 
-            var number2 = number.toLong()
-
-            var num = number2
-            var reversed = 0L
-            while (num != 0L) {
-                val digit = num % 10
-                reversed = reversed * 10 + digit
-                num /= 10
-            }
-
-            var reversedNo = reversed.toString().substring(0, 9).toLong()
-            var reversedFinal = 0L
-            while (reversedNo != 0L) {
-                val digit = reversedNo % 10
-                reversedFinal = reversedFinal * 10 + digit
-                reversedNo /= 10
-            }
-
-            finalReversedNo = "0$reversedFinal"
-
-        }else{
-
-            finalReversedNo = "invalid phone number"
+            val userData = UserData(idletexterCalls, phoneNumber)
+            mergedContactList.add(userData)
 
         }
+        for (phoneNumber in contactListSMS){
+            val userData = UserData(idletexterMpesa, phoneNumber)
+            mergedContactList.add(userData)
+        }
+
+        return mergedContactList
 
 
-
-        return finalReversedNo.toString()
     }
+
 }

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">IdleTexter</string>
-    <string name="base_url">http://192.168.100.2:8085/</string>
+    <string name="base_url">http://192.168.81.213:8085/</string>
 <!--    <string name="base_url">http://216.137.179.173:8085/</string>-->
 
 </resources>
