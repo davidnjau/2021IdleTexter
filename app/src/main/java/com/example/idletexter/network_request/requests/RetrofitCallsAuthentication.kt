@@ -22,7 +22,7 @@ import java.util.*
 
 class RetrofitCallsAuthentication {
 
-    var customDialogToast = CustomDialogToast()
+//    var customDialogToast = CustomDialogToast()
 
     fun uploadContacts(context: Context, idletexterData: IdletexterData){
 
@@ -42,11 +42,11 @@ class RetrofitCallsAuthentication {
         val job1 = Job()
         CoroutineScope(Dispatchers.Main + job1).launch {
 
-            val progressDialog = ProgressDialog(context)
-            progressDialog.setTitle("Please wait..")
-            progressDialog.setMessage("Upload in progress..")
-            progressDialog.setCanceledOnTouchOutside(false)
-            progressDialog.show()
+//            val progressDialog = ProgressDialog(context)
+//            progressDialog.setTitle("Please wait..")
+//            progressDialog.setMessage("Upload in progress..")
+//            progressDialog.setCanceledOnTouchOutside(false)
+//            progressDialog.show()
 
             var messageToast = ""
             val job = Job()
@@ -61,7 +61,7 @@ class RetrofitCallsAuthentication {
                         response: Response<SuccessMessage>
                     ) {
 
-                        CoroutineScope(Dispatchers.Main).launch { progressDialog.dismiss() }
+//                        CoroutineScope(Dispatchers.Main).launch { progressDialog.dismiss() }
 
                         if (response.isSuccessful) {
 
@@ -76,14 +76,14 @@ class RetrofitCallsAuthentication {
 
                             }
 
-                            CoroutineScope(Dispatchers.Main).launch {
-                                customDialogToast.customDialogToast(
-                                    context as Activity,
-                                    messageToast
-                                )
-                                
-                                
-                            }
+//                            CoroutineScope(Dispatchers.Main).launch {
+//                                customDialogToast.customDialogToast(
+//                                    context as Activity,
+//                                    messageToast
+//                                )
+//
+//
+//                            }
 
                         } else {
 
@@ -100,12 +100,12 @@ class RetrofitCallsAuthentication {
 
                                 CoroutineScope(Dispatchers.IO).launch {
 
-                                    CoroutineScope(Dispatchers.Main).launch {
-                                        customDialogToast.customDialogToast(
-                                            context as Activity,
-                                            messageToast
-                                        )
-                                    }
+//                                    CoroutineScope(Dispatchers.Main).launch {
+//                                        customDialogToast.customDialogToast(
+//                                            context as Activity,
+//                                            messageToast
+//                                        )
+//                                    }
 
 
 
@@ -115,12 +115,12 @@ class RetrofitCallsAuthentication {
                                 messageToast =
                                     "We are experiencing some server issues. Please try again later"
 
-                                CoroutineScope(Dispatchers.Main).launch {
-                                    customDialogToast.customDialogToast(
-                                        context as Activity,
-                                        messageToast
-                                    )
-                                }
+//                                CoroutineScope(Dispatchers.Main).launch {
+//                                    customDialogToast.customDialogToast(
+//                                        context as Activity,
+//                                        messageToast
+//                                    )
+//                                }
                             }
 
 
@@ -134,13 +134,13 @@ class RetrofitCallsAuthentication {
                         Log.e("-*-*error ", t.localizedMessage)
                         messageToast = "There is something wrong. Please try again"
                         CoroutineScope(Dispatchers.Main).launch {
-                            customDialogToast.customDialogToast(
-                                context as Activity,
-                                messageToast
-                            )
+//                            customDialogToast.customDialogToast(
+//                                context as Activity,
+//                                messageToast
+//                            )
                         }
 
-                        progressDialog.dismiss()
+//                        progressDialog.dismiss()
                     }
                 })
 

